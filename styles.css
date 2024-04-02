@@ -1,0 +1,26 @@
+::backdrop {
+background-color: grey;
+    opacity: 0.75;
+  }
+
+  .card {
+    border: 2px solid grey;
+    padding: 10px;
+    margin: 10px;
+    background-color: silver;
+    display: flex;
+    flex-direction: column;
+  }
+
+html {
+    background-color: peachpuff;
+}
+
+div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.deleteCard {
+    background-color: yellow;
+}
