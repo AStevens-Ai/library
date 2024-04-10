@@ -1,4 +1,4 @@
-const myLibrary = [];
+const myLibrary = [{title:'Book 1', author: 'bob', pages: '203', read: 'true'}];
 let cardList = null;
 let dialog = document.querySelector('dialog')
 let openModal = document.querySelector('.openModal').addEventListener('click', () => {dialog.showModal()})
@@ -13,12 +13,26 @@ let pages = document.querySelector('#pages');
 let readStatus = document.querySelector('select')
 let bookList = document.querySelector('div');
 
-function Book(title, author, pages, read) {
+class Book {
+  constructor(title, author, pages, read){
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
+  }
 }
+
+class actionBooks extends Book {
+  constructor(title, author, pages, read, genre){
+    super(title, author, pages, read)
+    this.genre = genre;
+  }
+
+  displayActionBook() {
+    alert(`${this.title}, ${this.author}, ${this. pages}, ${this.read}, ${this.genre}`)
+  }
+}
+let book2 = new actionBooks('bob', 'bob builder', 122, 'Read', 'Action')
 
 function addBookToLibrary() {
   let newBookTitle = title.value;
@@ -27,9 +41,10 @@ function addBookToLibrary() {
   let newBookStatus = readStatus.value;
   if (newBookTitle === '') {
     alert('Please Enter Valid Title');
+    preventDefault()
     return;
   }
-  let newBook = new Book(newBookTitle,newBookAuthor, newBookPages, newBookStatus);
+  let newBook = new actionBooks(newBookTitle,newBookAuthor, newBookPages, newBookStatus, action);
 
   myLibrary.push(newBook);
   console.log(myLibrary);
@@ -63,6 +78,13 @@ function displayCards(book) {
       removeCard(i)
     })
 
+    let showGenre = document.createElement('button')
+    showGenre.classList.add('showGenre')
+    showGenre.textContent = 'Show Genre' 
+    showGenre.addEventListener('click', () => {
+      actionBooks.displayActionBook()
+    })
+
     let toggleRead = document.createElement('input')
     toggleRead.type = 'checkbox';
     toggleRead.classList.add('check-box')
@@ -77,7 +99,7 @@ function displayCards(book) {
     card.appendChild(bookStatusParagraph);
     card.appendChild(toggleRead)
     card.appendChild(deleteCard)
-    
+    card.appendChild(showGenre)
 
     bookList.appendChild(card);
   }
@@ -87,3 +109,6 @@ function removeCard(i) {
   myLibrary.splice(i, 1)
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  displayCards(myLibrary)
+})
