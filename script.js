@@ -2,16 +2,47 @@ const myLibrary = [{title:'Book 1', author: 'bob', pages: '203', read: 'true'}];
 let cardList = null;
 let dialog = document.querySelector('dialog')
 let openModal = document.querySelector('.openModal').addEventListener('click', () => {dialog.showModal()})
-let submitModal = document.querySelector('form').addEventListener('submit', (event) => {
-  event.preventDefault()
-  addBookToLibrary()
-  dialog.close()
-})
+const form = document.querySelector('form')
 let title = document.querySelector('#title');
 let author = document.querySelector('#author');
 let pages = document.querySelector('#pages');
 let readStatus = document.querySelector('select')
 let bookList = document.querySelector('div');
+const titleError = document.querySelector('#title + span.error')
+const authorError = document.querySelector('#author + span.error')
+const pagesError = document.querySelector('#pages + span.error')
+
+form.addEventListener('submit', (event) => {
+  if (!title.validity.valid) {
+    showError()
+    event.preventDefault()
+    return
+  } else if (!author.validity.valid){
+    showError()
+    event.preventDefault()
+    return
+  } else if (!pages.validity.valid){
+    showError()
+    event.preventDefault()
+    return
+  }
+  event.preventDefault()
+  addBookToLibrary()
+  dialog.close()
+})
+
+
+function showError() {
+  if(title.validity.valueMissing) {
+    titleError.textContent = 'You need to enter a Title of a book'
+  } else if (title.validity.typeMismatch) {
+    titleError.textContent = 'Entered value needs to be text of a title.'
+  } else if (title.validity.tooShort) {
+    titleError.textContent = `Title should be at least ${title.minlength} character; You entered ${title.value.length}.`
+  }
+
+  titleError.classList.add('active')
+}
 
 class Book {
   constructor(title, author, pages, read){
@@ -39,12 +70,7 @@ function addBookToLibrary() {
   let newBookAuthor = author.value;
   let newBookPages = pages.value;
   let newBookStatus = readStatus.value;
-  if (newBookTitle === '') {
-    alert('Please Enter Valid Title');
-    preventDefault()
-    return;
-  }
-  let newBook = new actionBooks(newBookTitle,newBookAuthor, newBookPages, newBookStatus, action);
+  let newBook = new Book(newBookTitle,newBookAuthor, newBookPages, newBookStatus);
 
   myLibrary.push(newBook);
   console.log(myLibrary);
@@ -112,3 +138,5 @@ function removeCard(i) {
 document.addEventListener('DOMContentLoaded', () => {
   displayCards(myLibrary)
 })
+
+
